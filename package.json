@@ -1,0 +1,21 @@
+{
+  "name": "movies-explorer-api",
+  "version": "1.0.0",
+  "description": "Бэкенд-часть дипломного проекта яндекс.практикум",
+  "main": "app.js",
+  "scripts": {
+    "start": "node ./app.js",
+    "dev": "nodemon ./app.js"
+  },
+
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LethL/movies-explorer-api.git"
+  },
+  "author": "Dmitry Goncharov",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LethL/movies-explorer-api/issues"
+  },
+  "homepage": "https://github.com/LethL/movies-explorer-api#readme"
+}
