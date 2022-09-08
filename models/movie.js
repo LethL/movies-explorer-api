@@ -60,9 +60,10 @@ const movieSchema = new mongoose.Schema({
     ref: 'user',
   },
   movieId: {
-    type: mongoose.ObjectId,
+    type: Number,
     required: true,
     ref: 'movie',
+    unique: true,
   },
   nameRU: {
     type: String,
