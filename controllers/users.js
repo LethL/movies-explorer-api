@@ -1,20 +1,35 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const User = require('../models/user');
+const NotFoundError = require('../errors/NotFoundError');
+const ValidationError = require('../errors/ValidationError');
+const DuplicateError = require('../errors/DuplicateError');
 
-const getUser = (req, res) => {
+const getUser = (req, res, next) => {
   User.findById(req.user._id)
-    .then((user) => res.send(user))
-    .catch(() => res.status(500).send({ message: 'Произошла ошибка' }));
+    .then((user) => {
+      if (!user) {
+        throw new NotFoundError('Пользователь по указанному id не найден.');
+      } else {
+        res.send(user);
+      }
+    })
+    .catch(next);
 };
 
-const updateUser = (req, res) => {
+const updateUser = (req, res, next) => {
   const { name, email } = req.body;
   const userId = req.user._id;
 
   User.findByIdAndUpdate(userId, { name, email }, { new: true, runValidators: true })
     .then((user) => res.send(user))
-    .catch((err) => res.status(500).send({ message: err }));
+    .catch((err) => {
+      if (err.name === 'ValidationError') {
+        next(new ValidationError('Переданы некорректные данные при обновлении пользователя.'));
+      } else {
+        next(err);
+      }
+    });
 };
 
 const createUser = (req, res, next) => {
@@ -29,16 +44,16 @@ const createUser = (req, res, next) => {
     }))
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        next(new Error('Переданы некорректные данные при создании пользователя.'));
+        next(new ValidationError('Переданы некорректные данные при создании пользователя.'));
       } else if (err.name === 'MongoError' || err.code === 11000) {
-        next(new Error(('Пользователь с таким email уже существует.')));
+        next(new DuplicateError(('Пользователь с таким email уже существует.')));
       } else {
         next(err);
       }
     });
 };
 
-const login = (req, res) => {
+const login = (req, res, next) => {
   const { email, password } = req.body;
 
   return User.findUserByCredentials(email, password)
@@ -55,7 +70,7 @@ const login = (req, res) => {
       })
         .send({ token });
     })
-    .catch(() => res.status(400).send({ message: 'Неправильные почта или пароль.' }));
+    .catch(next);
 };
 
 const logout = (req, res) => {
