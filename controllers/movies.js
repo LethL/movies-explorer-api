@@ -42,7 +42,13 @@ const createMovie = (req, res) => {
 
 const deleteMovie = (req, res) => {
   Movie.findByIdAndRemove(req.params.id)
-    .then((movie) => res.send(movie))
+    .then((movie) => {
+      if (!movie) {
+        res.status(404).send({ message: 'not found movie' });
+      } else {
+        res.send(movie);
+      }
+    })
     .catch(() => res.status(500).send({ message: 'Произошла ошибка' }));
 };
 

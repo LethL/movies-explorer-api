@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
-const validator = require('validator');
 
-const linkRegExp = /^((https?):\/\/(www\.)?(([\w-]{1,})(\.))+([a-z]{2,10})([\w\W]{1,})?)$/i;
+const { linkRegExp } = require('../middlewares/validation');
 
 const movieSchema = new mongoose.Schema({
   country: {

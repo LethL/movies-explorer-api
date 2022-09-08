@@ -3,7 +3,7 @@ const bcrypt = require('bcryptjs');
 const User = require('../models/user');
 
 const getUser = (req, res) => {
-  User.findById(req.params.userId)
+  User.findById(req.user._id)
     .then((user) => res.send(user))
     .catch(() => res.status(500).send({ message: 'Произошла ошибка' }));
 };
