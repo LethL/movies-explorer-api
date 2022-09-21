@@ -5,13 +5,13 @@ const AuthError = require('../errors/AuthError');
 const { NODE_ENV, JWT_SECRET } = process.env;
 
 module.exports = (req, res, next) => {
-  const token = req.cookies.jwt;
-  console.log(req.cookies);
-  console.log(token);
-  console.log(req);
-  if (!token) {
+  const { authorization } = req.headers;
+
+  if (!authorization || !authorization.startsWith('Bearer ')) {
     throw new AuthError(('Токен не передан.'));
   }
+
+  const token = authorization.replace('Bearer ', '');
 
   let payload;
 
