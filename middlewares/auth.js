@@ -8,7 +8,7 @@ module.exports = (req, res, next) => {
   const token = req.cookies.jwt;
 
   if (!token) {
-    throw new AuthError(('Неправильные почта или пароль.'));
+    throw new AuthError(('Токен не передан.'));
   }
 
   let payload;
@@ -16,7 +16,7 @@ module.exports = (req, res, next) => {
   try {
     payload = jwt.verify(token, NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret');
   } catch (err) {
-    throw new AuthError(('Неправильные почта или пароль.'));
+    throw new AuthError(('Некорректный токен.'));
   }
 
   req.user = payload;
