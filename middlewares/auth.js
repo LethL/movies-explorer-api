@@ -6,7 +6,9 @@ const { NODE_ENV, JWT_SECRET } = process.env;
 
 module.exports = (req, res, next) => {
   const token = req.cookies.jwt;
-
+  console.log(req.cookies);
+  console.log(token);
+  console.log(req);
   if (!token) {
     throw new AuthError(('Токен не передан.'));
   }
