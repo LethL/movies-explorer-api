@@ -5,9 +5,7 @@ const NotFoundError = require('../errors/NotFoundError');
 const NoRightsError = require('../errors/NoRightsError');
 
 const getMovies = (req, res, next) => {
-  const userId = req.user._id;
-
-  Movie.find({ userId })
+  Movie.find({ owner: req.user._id })
     .then((movies) => res.send(movies))
     .catch(next);
 };
