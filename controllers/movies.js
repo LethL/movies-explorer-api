@@ -44,8 +44,7 @@ const createMovie = (req, res, next) => {
       if (err.name === 'ValidationError') {
         next(new ValidationError(err.message));
       } else if (err.name === 'MongoServerError' && err.code === 11000) {
-        console.log(err);
-        console.log(err.messaage);
+        res.send(err);
         next(new DuplicateError('Фильм уже сохранен в избранном.'));
       } else {
         next(err);
