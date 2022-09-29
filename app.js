@@ -46,7 +46,7 @@ app.use((req, res, next) => {
   return next();
 });
 
-mongoose.connect('mongodb://localhost:27017/bitfilmsdb', {
+mongoose.connect('mongodb://localhost:27017/bitfilms', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   autoIndex: true,
