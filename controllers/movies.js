@@ -43,6 +43,10 @@ const createMovie = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'ValidationError') {
         next(new ValidationError(err.message));
+      } else if (err.name === 'MongoServerError' && err.code === 11000) {
+        console.log(err);
+        console.log(err.messaage);
+        next(new DuplicateError('Фильм уже сохранен в избранном.'));
       } else {
         next(err);
       }
@@ -64,7 +68,7 @@ const deleteMovie = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        next(new ValidationError('Переданы некорректные данные id фильмаs'));
+        next(new ValidationError('Переданы некорректные данные id фильма'));
       } else {
         next(err);
       }
